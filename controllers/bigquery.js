@@ -14,17 +14,7 @@ async function execSQL(query) {
     }
 }
 
-async function getArtBySingleFilter(name, value) {
-    const query = `SELECT objects.*, original_image_url
-    FROM \`bigquery-public-data.the_met.objects\` as objects
-    INNER JOIN \`bigquery-public-data.the_met.images\` as images
-    ON objects.object_id=images.object_id
-    WHERE lower(${name}) LIKE \'%${value.toLowerCase()}%\'`;
-
-    return await execSQL(query);
-}
-
-async function getArtByMultipleFilters(filters) {
+async function getArtWithFilters(filters) {
     let keys = Object.keys(filters);
 
     let query = `SELECT objects.*, original_image_url
@@ -43,6 +33,8 @@ async function getArtByMultipleFilters(filters) {
 
 
 module.exports = {
-    getArtBySingleFilter,
-    getArtByMultipleFilters
+    getArtWithFilters
 }
+
+// Test with multiple filters
+//getArtWithFilters({ "medium": "oil", "department": "European Paintings" }).then((response) => { console.log(response); });
